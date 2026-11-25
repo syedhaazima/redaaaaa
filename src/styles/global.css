@@ -111,22 +111,21 @@ body.menu .menub i span:last-child{transform:translateY(-3.25px) rotate(-45deg)}
 /* overlay menu */
 .ovl{position:fixed;inset:0;z-index:140;background:var(--bg2);clip-path:inset(0 0 100% 0);transition:clip-path .9s var(--ease);visibility:hidden;overflow:auto}
 body.menu .ovl{clip-path:inset(0 0 0 0);visibility:visible}
-.ovl .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:60px;padding-block:calc(env(safe-area-inset-top,0px) + 120px) 50px;min-height:100%}
+.ovl .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(30px,4vw,56px);padding-block:calc(env(safe-area-inset-top,0px) + 112px) 44px;min-height:100%}
 .ovl ol{list-style:none;margin:0;padding:0;counter-reset:m}
 .ovl li{overflow:hidden;border-bottom:1px solid var(--line)}
-.ovl li a{display:flex;align-items:baseline;gap:22px;padding:14px 0;text-decoration:none;font:800 clamp(2rem,4.8vw,4.2rem)/1.05 var(--fd);font-variation-settings:"wdth" 118;text-transform:uppercase;letter-spacing:-.02em;transform:translateY(110%);transition:transform .8s var(--ease),color .3s}
-html[lang="ar"] .ovl li a{font-family:var(--fad);font-variation-settings:normal;letter-spacing:0;font-size:clamp(1.6rem,3.6vw,3rem);line-height:1.5}
+.ovl li a{display:flex;align-items:baseline;gap:16px;padding:11px 0;text-decoration:none;font:800 clamp(1.15rem,2.3vw,2rem)/1.1 var(--fd);font-variation-settings:"wdth" 118;text-transform:none;letter-spacing:-.02em;transform:translateY(110%);transition:transform .8s var(--ease),color .3s}
+html[lang="ar"] .ovl li a{font-family:var(--fad);font-variation-settings:normal;letter-spacing:0;font-size:clamp(1.05rem,2vw,1.7rem);line-height:1.5}
 body.menu .ovl li a{transform:none}
-.ovl li a small{font:400 .8rem/1 var(--fd);color:var(--gold);letter-spacing:.1em;font-variation-settings:normal}
+.ovl li a small{font:400 .74rem/1 var(--fd);color:var(--gold);letter-spacing:.1em;font-variation-settings:normal}
 .ovl li a:hover{color:var(--gold2)}
-.ovl .aside{display:grid;gap:26px;align-content:start}
+.ovl .aside{display:grid;gap:22px;align-content:start;max-width:460px;width:100%;justify-self:end}
 .ovl .pv{aspect-ratio:4/3;overflow:hidden;position:relative;background:var(--panel)}
 .ovl .pv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.08);transition:opacity .6s,transform 1.2s var(--ease)}
 .ovl .pv img.on{opacity:1;transform:none}
-.ovl .ct{display:grid;gap:6px;font-size:.92rem;color:var(--mut)}
+.ovl .ct{display:grid;gap:6px;font-size:.88rem;color:var(--mut)}
 .ovl .ct b{color:var(--fg);font-weight:500}
-@media (max-width:860px){.ovl .wrap{grid-template-columns:1fr}.ovl .pv{display:none}}
-@media (max-width:760px){.ovl li a{text-transform:none}}
+@media (max-width:860px){.ovl .wrap{grid-template-columns:1fr;align-content:start}.ovl .pv{display:none}.ovl .aside{justify-self:start;max-width:none}}
 
 /* hero */
 .hero{position:relative;min-height:min(100svh,980px);display:flex;align-items:flex-end;overflow:hidden;isolation:isolate;padding-block:150px 60px}
@@ -149,9 +148,15 @@ html[lang="ar"] .scue{letter-spacing:0;font-size:.85rem}
 .scue i{width:1px;height:46px;background:var(--line);position:relative;overflow:hidden}
 .scue i::after{content:"";position:absolute;inset:0;background:var(--gold);animation:sc 2s var(--ease) infinite}
 @keyframes sc{0%{transform:translateY(-100%)}60%,100%{transform:translateY(100%)}}
-.legend{position:absolute;top:130px;inset-inline-end:var(--gR);display:grid;gap:8px;font-size:.74rem;color:var(--mut);letter-spacing:.14em;text-transform:uppercase;text-align:end}
+.legend{position:absolute;z-index:2;top:130px;inset-inline-end:var(--gR);display:grid;gap:8px;font-size:.74rem;color:var(--mut);letter-spacing:.14em;text-transform:uppercase;text-align:end}
 html[lang="ar"] .legend{letter-spacing:0;font-size:.85rem}
 .legend span{display:flex;gap:10px;align-items:center;justify-content:flex-end}
+.legend .lg{all:unset;box-sizing:border-box;display:flex;gap:10px;align-items:center;justify-content:flex-end;cursor:pointer;transition:color .3s}
+.legend .lg:hover,.legend .lg[aria-expanded="true"]{color:var(--gold2)}
+.legend .lg:focus-visible,.legend .lgl button:focus-visible{outline:2px solid var(--gold2);outline-offset:4px}
+.legend .lgl{list-style:none;margin:2px 0 0;padding:8px 0;display:grid;background:rgba(5,9,24,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-inline-end:2px solid var(--gold);max-height:min(50vh,360px);overflow:auto}
+.legend .lgl button{all:unset;box-sizing:border-box;display:block;width:100%;padding:7px 16px;cursor:pointer;text-align:end;color:#C3CAE0;transition:color .3s,background .3s}
+.legend .lgl button:hover{color:var(--gold2);background:rgba(255,255,255,.04)}
 .legend i{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}
 .legend i.w{background:#fff;box-shadow:0 0 12px #fff}
 @media (max-width:760px){.hero .row2{grid-template-columns:1fr}.legend{display:none}.hero{padding-top:120px}}
@@ -178,6 +183,7 @@ html[lang="ar"] .kpis span{letter-spacing:0;font-size:.95rem}
 .hz .track{display:flex;gap:22px;padding-left:var(--gL);padding-right:var(--gR);padding-block:50px clamp(90px,12vw,150px);width:max-content}
 .sc{position:relative;width:min(440px,78vw);aspect-ratio:3/4;flex:none;overflow:hidden;text-decoration:none;background:var(--panel);display:flex;align-items:flex-end}
 .sc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.12);transition:transform 1.4s var(--ease),filter .6s;filter:saturate(.75) brightness(.7)}
+.sc img{translate:var(--px,0) 0}
 .sc:hover img{transform:scale(1.02);filter:saturate(1) brightness(.8)}
 .sc::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,9,24,.95),rgba(5,9,24,0) 55%)}
 .sc .in{position:relative;z-index:1;padding:30px;display:grid;gap:12px;width:100%}
@@ -200,6 +206,7 @@ html[dir="rtl"] .sc:hover .ar{transform:rotate(45deg) scaleX(-1)}
 .svc li:last-child{border-bottom:1px solid var(--line)}
 .svc li .n{font:400 .85rem/1 var(--fd);color:var(--gold);padding-top:10px;letter-spacing:.1em}
 .svc li h3{font-size:clamp(1.2rem,1.8vw,1.65rem);color:rgba(236,239,247,.28);transition:color .5s}
+.svcAmp{font-family:Arial,Helvetica,sans-serif;font-variation-settings:normal}
 .svc li p{grid-column:2;color:var(--mut);max-width:48ch;max-height:0;overflow:hidden;opacity:0;transition:max-height .6s var(--ease),opacity .5s}
 .svc li.on h3{color:var(--fg)}
 .svc li.on p{max-height:140px;opacity:1}
@@ -278,6 +285,9 @@ footer .v2030{display:inline-flex;align-items:center;gap:12px;color:var(--gold)}
 footer .v2030 b{font:300 1.7rem/1 var(--fd);letter-spacing:-.02em;color:var(--gold2)}
 footer .v2030 span{display:grid;gap:3px;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;line-height:1.2;padding-inline-start:12px;border-inline-start:1px solid var(--gl)}
 footer .v2030 span i{font-style:normal;font-family:var(--fa);letter-spacing:0;font-size:.82rem;text-transform:none;color:var(--fg)}
+footer .v2030.logo30{display:inline-flex;align-items:center;justify-content:center;line-height:0}
+footer .v2030.logo30 img{display:block;height:46px;width:auto;max-width:150px;object-fit:contain}
+@media (max-width:460px){footer .v2030.logo30 img{height:40px}}
 footer .bot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding-block:22px;border-top:1px solid var(--line);font-size:.84rem;color:var(--mut)}
 @media (max-width:900px){footer .g{grid-template-columns:1fr 1fr}}
 @media (max-width:760px){footer .bot{flex-direction:column;align-items:center;text-align:center}}
@@ -427,7 +437,9 @@ html[lang="ar"] .pager b{font-family:var(--fad);font-variation-settings:normal}
 .pin .r{fill:none;stroke:var(--gold);transform-box:fill-box;transform-origin:center;animation:pl 2.4s ease-out infinite}
 .pin.hq .c{fill:#fff}.pin text{fill:#C9D1E8;font:500 9.5px var(--fd)}
 html[lang="ar"] .pin text{font-family:var(--fa);font-size:10.5px}
+.mapw .pin .c{transform-box:fill-box;transform-origin:center;transition:transform .3s}
 .pin.on .c{fill:var(--gold2)}.pin.on text{fill:var(--gold2)}
+.mapw .pin.on .c{transform:scale(1.5)}.mapw .pin.on text{font-weight:700}
 @keyframes pl{from{transform:scale(1);opacity:.9}to{transform:scale(3.2);opacity:0}}
 .mside{display:grid;gap:16px}
 .mside .pl{font-size:1.8rem}
@@ -471,7 +483,7 @@ html[lang="ar"] .cinf small{letter-spacing:0;font-size:.88rem}
 .cinf .v{font-size:clamp(1.05rem,1.6vw,1.35rem);overflow-wrap:anywhere}
 .cp{border:1px solid var(--line);background:transparent;border-radius:999px;padding:9px 16px;cursor:pointer;font-size:.8rem;font-weight:600}
 .cp:hover{border-color:var(--gold);color:var(--gold2)}
-form.enq{display:grid;gap:26px}
+form.enq{display:grid;gap:26px;align-content:start} /* keep fields packed at the top; the form used to stretch to the taller info + map column, spreading the rows apart and ballooning the button */
 .types{display:flex;flex-wrap:wrap;gap:8px}
 .types label{cursor:pointer}
 .types input{position:absolute;opacity:0;pointer-events:none}
@@ -482,6 +494,13 @@ form.enq{display:grid;gap:26px}
 .fl{position:relative}
 .fl input,.fl textarea,.fl select{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(255,255,255,.2);color:var(--fg);font:inherit;font-size:1.05rem;padding:26px 0 10px;outline:none;border-radius:0}
 .fl select option{background:var(--bg2)}
+/* Sector dropdown: same underline field as the inputs on every browser (Safari/iOS ignore padding on native selects, which made the chosen sector overlap the label) */
+.fl select{-webkit-appearance:none;-moz-appearance:none;appearance:none;cursor:pointer;line-height:1.4;min-height:62px;padding-inline-end:30px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23D4A657' stroke-width='1.6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 4px top 34px;background-size:12px 8px}
+html[dir="rtl"] .fl select{background-position:left 4px top 34px}
+.fl select::-ms-expand{display:none}
+.fl.s label{line-height:1.2}
+/* Browser autofill keeps the dark field instead of a light box behind the text */
+.fl :is(input,textarea):-webkit-autofill{-webkit-box-shadow:0 0 0 1000px var(--bg) inset;-webkit-text-fill-color:var(--fg);caret-color:var(--fg);transition:background-color 9999s}
 .fl textarea{min-height:110px;resize:vertical}
 .fl label{position:absolute;top:26px;inset-inline-start:0;color:var(--mut);transition:.3s var(--ease);pointer-events:none}
 .fl :is(input,textarea,select):focus{border-color:var(--gold)}

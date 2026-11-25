@@ -75,12 +75,12 @@ export function ProjectRow({ i }) {
   );
 }
 
-export function SectorCard({ i }) {
+export function SectorCard({ i, eager = false }) {
   const { lang } = useLang();
   const s = sector(i, lang);
   return (
     <a className="sc" href={`#sector-${SLUG[i]}`} data-view>
-      <img src={img(SIMG[i][0])} alt="" loading="lazy" />
+      <img src={img(SIMG[i][0])} alt="" loading={eager ? 'eager' : 'lazy'} />
       <span className="ar"><Arrow /></span>
       <div className="in">
         <span className="no">{num(i + 1)} / 08</span>

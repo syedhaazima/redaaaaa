@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLang } from '../lib/i18n.jsx';
 import { useUI } from '../lib/ui.jsx';
 import { PROJ, CATS, CITIES } from '../data/content.js';
@@ -7,14 +7,31 @@ import { Eyebrow, Banner, CtaBlock, ProjectRow } from '../components/Common.jsx'
 import { Search } from '../components/Icons.jsx';
 import SaudiMap from '../components/SaudiMap.jsx';
 import { ScrollTrigger } from '../lib/motion.js';
+import { scroller } from '../lib/scroll.js';
 
 export default function Projects() {
   const { t, ar, pick } = useLang();
-  const { openProject } = useUI();
+  const { openProject, pendingCity, setPendingCity } = useUI();
+  const fromLegend = pendingCity !== null && CITIES[pendingCity] !== undefined;
   const [filter, setFilter] = useState('all');
   const [query, setQuery] = useState('');
-  const [view, setView] = useState('list');
-  const [city, setCity] = useState(1);
+  const [view, setView] = useState(fromLegend ? 'map' : 'list');
+  const [city, setCity] = useState(fromLegend ? pendingCity : 1);
+  const mapRef = useRef(null);
+
+  // Arrived from "Head office" / "Project locations" on the home hero: map view, location selected, map scrolled into view
+  useEffect(() => {
+    if (!fromLegend) return undefined;
+    setPendingCity(null);
+    const tm = setTimeout(() => {
+      ScrollTrigger.refresh();
+      const el = mapRef.current;
+      if (!el) return;
+      if (scroller.lenis) scroller.lenis.scrollTo(el, { offset: -110 });
+      else el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 1100);
+    return () => clearTimeout(tm);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const counts = { all: PROJ.length };
   PROJ.forEach((p) => { counts[p[0]] = (counts[p[0]] || 0) + 1; });
@@ -54,7 +71,7 @@ export default function Projects() {
             </ul>
           </div>
 
-          <div className="mapw" hidden={view !== 'map'}>
+          <div className="mapw" hidden={view !== 'map'} ref={mapRef}>
             <div className="mapc"><SaudiMap city={city} onCity={setCity} label="Map of project locations" /></div>
             <div className="mside">
               <Eyebrow>{t('pLoc')}</Eyebrow>

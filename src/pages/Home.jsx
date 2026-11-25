@@ -1,10 +1,54 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { useLang } from '../lib/i18n.jsx';
-import { CAPS, CAPIMG, SECTORS, V2030, CLIENTS } from '../data/content.js';
+import { CAPS, CAPIMG, SECTORS, V2030, CLIENTS, CITIES } from '../data/content.js';
 import { capName, capDesc, num, img } from '../lib/format.js';
 import { Eyebrow, Heading, TextLink, CtaBlock, ProjectRow, SectorCard, Kpis, Marquee } from '../components/Common.jsx';
 import { Arrow } from '../components/Icons.jsx';
 import HeroGL from '../components/HeroGL.jsx';
+import { useUI } from '../lib/ui.jsx';
+
+/* Hero legend: "Head office · Dammam" opens the map on the head office;
+   "Project locations" lists the project cities, each opening the map on that location.
+   Uses the existing CITIES data and the Projects page map. */
+function MapLegend() {
+  const { t, pick } = useLang();
+  const { setPendingCity } = useUI();
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const show = (i) => { setOpen(false); setPendingCity(i); window.location.hash = '#projects'; };
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const away = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    const esc = (e) => { if (e.key === 'Escape') setOpen(false); };
+    document.addEventListener('pointerdown', away);
+    document.addEventListener('keydown', esc);
+    return () => { document.removeEventListener('pointerdown', away); document.removeEventListener('keydown', esc); };
+  }, [open]);
+
+  return (
+    <div className="legend" ref={ref}>
+      <button type="button" className="lg" onClick={() => show(0)} data-hov>{t('lgHQ')}<i className="w" /></button>
+      <button type="button" className="lg" aria-expanded={open} aria-controls="lgList" onClick={() => setOpen((o) => !o)} data-hov>{t('lgP')}<i /></button>
+      {open && (
+        <ul className="lgl" id="lgList" data-lenis-prevent>
+          {CITIES.map((c, i) => (c[5] ? null : (
+            <li key={i}><button type="button" onClick={() => show(i)} data-hov>{pick(c[0], c[1])}</button></li>
+          )))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function ServiceText({ text }) {
+  return text.split('&').map((part, i) => (
+    <Fragment key={i}>
+      {i > 0 && <span className="svcAmp">&amp;</span>}
+      {part}
+    </Fragment>
+  ));
+}
 
 export default function Home() {
   const { t, ar, pick } = useLang();
@@ -16,10 +60,7 @@ export default function Home() {
         <div className="fall" />
         <HeroGL ar={ar} />
         <div className="vig" />
-        <div className="legend" aria-hidden="true">
-          <span>{t('lgHQ')}<i className="w" /></span>
-          <span>{t('lgP')}<i /></span>
-        </div>
+        <MapLegend />
         <div className="wrap">
           <Eyebrow>EPC · Class 2 · KSA</Eyebrow>
           <Heading as="h1" id="h1" html={t('heroL').join('<br>')} />
@@ -70,7 +111,7 @@ export default function Home() {
             <TextLink href="#sectors">{t('allSec')}</TextLink>
           </div>
         </div>
-        <div className="track" id="track">{SECTORS.map((s, i) => <SectorCard key={i} i={i} />)}</div>
+        <div className="track" id="track">{SECTORS.map((s, i) => <SectorCard key={i} i={i} eager />)}</div>
       </section>
 
       <section className="sec" style={{ paddingTop: 0 }}>
@@ -81,8 +122,8 @@ export default function Home() {
               {CAPS.map((c, i) => (
                 <li key={i} data-i={i} className={i === 0 ? 'on' : undefined}>
                   <span className="n">{num(i + 1)}</span>
-                  <h3>{capName(i, ar)}</h3>
-                  <p>{capDesc(i, ar)}</p>
+                  <h3><ServiceText text={capName(i, ar)} /></h3>
+                  <p><ServiceText text={capDesc(i, ar)} /></p>
                 </li>
               ))}
             </ol>

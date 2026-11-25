@@ -19,3 +19,5 @@ export const projName = (i, ar) => (ar ? PROJ[i][2] : PROJ[i][1]);
 export const projLoc = (i, ar) => (ar ? PROJ[i][4] : PROJ[i][3]);
 export const projCat = (i, ar) => CATS[PROJ[i][0]][ar ? 1 : 0];
 export const img = (name) => `img/${name}.jpg`;
+/* Transparent-background logo (PNG) used in the header, footer and preloader */
+export const LOGO = 'img/logo.png';

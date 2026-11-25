@@ -65,6 +65,7 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [project, setProject] = useState(null);
   const [pendingSector, setPendingSector] = useState(null);
+  const [pendingCity, setPendingCity] = useState(null); // city to open on the Projects map (from the home hero legend)
   const curtainRef = useRef(null);
   const curtainTitle = useRef(null);
   const phase = useRef('boot'); // boot (preloader) | curtain | ready
@@ -151,7 +152,9 @@ export default function App() {
     openProject: (i) => setProject(i),
     pendingSector,
     setPendingSector,
-  }), [menuOpen, pendingSector]);
+    pendingCity,
+    setPendingCity,
+  }), [menuOpen, pendingSector, pendingCity]);
 
   const introNow = useCallback(() => phase.current === 'ready', []);
 

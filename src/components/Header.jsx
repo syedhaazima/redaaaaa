@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLang } from '../lib/i18n.jsx';
 import { useUI } from '../lib/ui.jsx';
 import { NAV } from '../data/content.js';
-import { img } from '../lib/format.js';
+import { LOGO } from '../lib/format.js';
 import { Globe } from './Icons.jsx';
 
 export default function Header({ active }) {
@@ -35,7 +35,7 @@ export default function Header({ active }) {
       <header className={`mast${solid ? ' solid' : ''}${hidden && !menuOpen ? ' hide' : ''}`} id="mast">
         <div className="wrap">
           <a className="logo" href="#home" data-hov>
-            <img src={img('logo')} alt="" />
+            <img src={LOGO} alt="" />
             <span><b>{t('logoB')}</b><small>{t('logoS')}</small></span>
           </a>
           <nav className="pri" aria-label="Main">

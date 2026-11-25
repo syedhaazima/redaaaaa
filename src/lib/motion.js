@@ -13,6 +13,7 @@ const $$ = (q, r = document) => [...r.querySelectorAll(q)];
 let ctx = null;
 let mm = null;
 let mqRAF = 0;
+let refreshT = 0;
 
 /* Wrap each word of a heading so it can rise in from a mask. */
 export function splitWords(el) {
@@ -45,6 +46,7 @@ export function teardown() {
   if (mm) { mm.revert(); mm = null; }
   ScrollTrigger.getAll().forEach((s) => s.kill());
   cancelAnimationFrame(mqRAF);
+  clearTimeout(refreshT);
 }
 
 /* Entrance animation for the first screen of a page (hero / banner). */
@@ -152,12 +154,13 @@ export function mountPage(root, { ar }) {
         const dist = () => Math.max(0, tr.scrollWidth - window.innerWidth);
         const tw = gsap.to(tr, {
           x: () => (ar ? 1 : -1) * dist(), ease: 'none',
-          scrollTrigger: { trigger: hz, start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1 },
+          scrollTrigger: { trigger: hz, start: 'top top', end: () => '+=' + dist(), pin: true, scrub: true, invalidateOnRefresh: true, anticipatePin: 1 },
         });
+        // Parallax uses the --px variable (CSS `translate`), so it never fights the card's own hover transform transition
         if (!ar) $$('.sc img', tr).forEach((im) =>
-          gsap.fromTo(im, { xPercent: 8 }, { xPercent: -8, ease: 'none', scrollTrigger: { trigger: im.parentElement, containerAnimation: tw, start: 'left right', end: 'right left', scrub: true } })
+          gsap.fromTo(im, { '--px': '8%' }, { '--px': '-8%', ease: 'none', scrollTrigger: { trigger: im.parentElement, containerAnimation: tw, start: 'left right', end: 'right left', scrub: true } })
         );
-        return () => gsap.set(tr, { x: 0 });
+        return () => { gsap.set(tr, { x: 0 }); $$('.sc img', tr).forEach((im) => im.style.removeProperty('--px')); };
       });
       mm.add('(max-width: 900px)', () => { hz.classList.add('native'); });
     }
@@ -190,5 +193,7 @@ export function mountPage(root, { ar }) {
   }, root);
 
   requestAnimationFrame(() => ScrollTrigger.refresh());
-  $$('img', root).forEach((im) => { if (!im.complete) im.addEventListener('load', () => ScrollTrigger.refresh(), { once: true }); });
+  // Re-measure once after images settle, instead of on every single image load while the user is scrolling
+  const later = () => { clearTimeout(refreshT); refreshT = setTimeout(() => ScrollTrigger.refresh(), 250); };
+  $$('img', root).forEach((im) => { if (!im.complete) im.addEventListener('load', later, { once: true }); });
 }

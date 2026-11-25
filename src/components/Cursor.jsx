@@ -28,9 +28,9 @@ export default function Cursor() {
       mag = null;
     };
 
-    const onMove = (e) => {
-      cx = e.clientX; cy = e.clientY;
-      const tg = e.target instanceof Element ? e.target : null;
+    // Show the photo of the project row under the pointer (also re-checked while scrolling,
+    // because rows move under a still mouse and no pointer event fires)
+    const showRow = (tg) => {
       const row = tg && tg.closest('.prow');
       if (row) {
         const src = img(row.dataset.img);
@@ -39,6 +39,18 @@ export default function Cursor() {
       } else {
         fl.classList.remove('on');
       }
+    };
+    let moved = false;
+    const onScroll = () => {
+      if (!moved) return;
+      const el = document.elementFromPoint(cx, cy);
+      showRow(el instanceof Element ? el : null);
+    };
+
+    const onMove = (e) => {
+      cx = e.clientX; cy = e.clientY; moved = true;
+      const tg = e.target instanceof Element ? e.target : null;
+      showRow(tg);
       const m = tg && tg.closest('.mag');
       if (m !== mag) releaseMag();
       if (m) {
@@ -47,8 +59,16 @@ export default function Cursor() {
         m.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.3}px,${(e.clientY - r.top - r.height / 2) * 0.4}px)`;
       }
     };
+    const onLeave = () => fl.classList.remove('on');
     window.addEventListener('pointermove', onMove);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('pointermove', onMove); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    document.documentElement.addEventListener('pointerleave', onLeave);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('scroll', onScroll);
+      document.documentElement.removeEventListener('pointerleave', onLeave);
+    };
   }, []);
 
   return (

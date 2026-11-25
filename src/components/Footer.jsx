@@ -1,15 +1,27 @@
+import { useEffect, useState } from 'react';
 import { useLang } from '../lib/i18n.jsx';
 import { NAV, SECTORS, SLUG } from '../data/content.js';
-import { img } from '../lib/format.js';
+import { LOGO } from '../lib/format.js';
+
+/* Official Saudi Vision 2030 logo. Place the official file at public/img/vision2030.png
+   (white / light version for the dark footer). Until it exists, the text badge is shown instead. */
+const V2030_LOGO = 'img/vision2030.png';
 
 export default function Footer() {
   const { t, lang, ar } = useLang();
+  const [v30Logo, setV30Logo] = useState(false);
+  useEffect(() => {
+    const probe = new Image();
+    probe.onload = () => setV30Logo(true);
+    probe.src = V2030_LOGO;
+    return () => { probe.onload = null; };
+  }, []);
   return (
     <footer>
       <div className="wrap">
         <div className="g">
           <div>
-            <a className="logo" href="#home"><img src={img('logo')} alt="" /><span><b>{t('logoB')}</b><small>{t('logoS')}</small></span></a>
+            <a className="logo" href="#home"><img src={LOGO} alt="" /><span><b>{t('logoB')}</b><small>{t('logoS')}</small></span></a>
             <p className="mut" style={{ marginTop: 20, maxWidth: '36ch', fontSize: '.93rem' }}>{t('fAbout')}</p>
             <div className="iso"><span>ISO 9001:2015</span><span>ISO 14001:2015</span><span>ISO 45001:2018</span></div>
           </div>
@@ -32,10 +44,16 @@ export default function Footer() {
         </div>
         <div className="bot">
           <span>© 2026 {t('coName')} {t('rights')}</span>
-          <span className="v2030" aria-label={ar ? 'رؤية السعودية 2030' : 'Saudi Vision 2030'}>
-            <b dir="ltr">2030</b>
-            <span>Saudi Vision<i lang="ar">رؤية السعودية</i></span>
-          </span>
+          {v30Logo ? (
+            <span className="v2030 logo30">
+              <img src={V2030_LOGO} alt={ar ? 'رؤية السعودية 2030' : 'Saudi Vision 2030'} />
+            </span>
+          ) : (
+            <span className="v2030" aria-label={ar ? 'رؤية السعودية 2030' : 'Saudi Vision 2030'}>
+              <b dir="ltr">2030</b>
+              <span>Saudi Vision<i lang="ar">رؤية السعودية</i></span>
+            </span>
+          )}
           <span>{t('crL')} <span dir="ltr">2050080690</span> · {t('city')}</span>
         </div>
       </div>

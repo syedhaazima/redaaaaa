@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { img, reducedMotion } from '../lib/format.js';
+import { reducedMotion, LOGO } from '../lib/format.js';
 
 /* Opening loader with the Redaa logo; slides away when done. */
 export default function Preloader({ onDone }) {
@@ -25,7 +25,7 @@ export default function Preloader({ onDone }) {
   return (
     <div className={`pre${leaving ? ' done' : ''}`} aria-hidden="true">
       <div className="in">
-        <img src={img('logo')} alt="" />
+        <img src={LOGO} alt="" />
         <div className="bar"><i style={{ transform: `scaleX(${k / 100})` }} /></div>
         <span className="n">{String(Math.round(k)).padStart(3, '0')}</span>
       </div>
