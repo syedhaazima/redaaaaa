@@ -42,12 +42,7 @@ function MapLegend() {
 }
 
 function ServiceText({ text }) {
-  return text.split('&').map((part, i) => (
-    <Fragment key={i}>
-      {i > 0 && <span className="svcAmp">&amp;</span>}
-      {part}
-    </Fragment>
-  ));
+  return text;
 }
 
 export default function Home() {

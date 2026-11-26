@@ -1,4 +1,5 @@
 /* Base reset */
+@font-face{font-family:"Redaa Ampersand";src:local("Arial");unicode-range:U+0026}
 body{margin:0}
 [hidden]{display:none!important}
 img{max-width:100%}
@@ -8,7 +9,7 @@ img{max-width:100%}
   color-scheme:dark;
   --bg:#050918; --bg2:#08102A; --panel:#0C1634; --panel2:#111E44; --line:rgba(255,255,255,.09); --gl:rgba(212,166,87,.28);
   --fg:#ECEFF7; --mut:#8E99B8; --gold:#D4A657; --gold2:#F2CF86; --on-gold:#0A1430; --blue:#3C5BC0;
-  --fd:"Archivo","Helvetica Neue",Arial,sans-serif; --fa:"IBM Plex Sans Arabic",Tahoma,sans-serif; --fad:"Noto Kufi Arabic",Tahoma,sans-serif;
+  --fd:"Redaa Ampersand","Archivo","Helvetica Neue",Arial,sans-serif; --fa:"Redaa Ampersand","IBM Plex Sans Arabic",Tahoma,sans-serif; --fad:"Redaa Ampersand","Noto Kufi Arabic",Tahoma,sans-serif;
   --gL:max(20px, env(safe-area-inset-left, 0px)); --gR:max(20px, env(safe-area-inset-right, 0px));
   --ease:cubic-bezier(.7,0,.2,1);
 }
