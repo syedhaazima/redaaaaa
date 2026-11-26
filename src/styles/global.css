@@ -1,5 +1,5 @@
 /* Base reset */
-@font-face{font-family:"Redaa Ampersand";src:local("Arial");unicode-range:U+0026}
+@font-face{font-family:"Redaa Ampersand";src:local("Arial"),local("ArialMT"),local("Helvetica Neue"),local("Roboto"),local("Noto Sans"),local("Liberation Sans");unicode-range:U+0026}
 body{margin:0}
 [hidden]{display:none!important}
 img{max-width:100%}
